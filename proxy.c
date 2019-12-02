@@ -29,7 +29,7 @@ char pass[10] = "password";
 
 int findminfreq ()
 {
-  //printf ("\n finding minimum frequency");
+  
   int min = INT_MAX;
   int location = -1;
   for (int c = 0; c < 15; c++)
@@ -49,12 +49,9 @@ int findminfreq ()
 	    {
 	      min = frequency[c];
 	      location = c;
-	    //  printf ("\n min = %d", min);
-	     // printf ("\n loc = %d", location);
 	    }
 	}
     }
-  //printf ("\n %d", location);
   return location;
 }
 
@@ -132,26 +129,22 @@ main (int arg_cnt, char *arg_val[])
       sscanf (buffer, "%s %s ", request, site);
       int Bflag = 0;
       int authflag = 0;
-     // printf ("\n \n site %s blag %d authflag %d", site, Bflag, authflag);
 
       for (int k = 0; k < 4; k++)
 	{
 	  if (strcmp (site, blockedSite[k]) == 0)
 	    {
-	    //  printf ("\n inside blockedif");
 	      Bflag++;
 	      break;
 	    }
 	  if (strcmp (site, authSite[k]) == 0)
 	    {
-	     // printf ("\n inside autgedif");
 	      authflag++;
 	      break;
 	    }
 	}
       char password[10];
       int AAflag = 1;
-      //printf ("\n authflag %d\n", authflag);
       if (authflag)
 	{
 	  char messag[] =
@@ -159,14 +152,9 @@ main (int arg_cnt, char *arg_val[])
 	  write (client_sock, messag, strlen (messag));
 	  password[0] = '\0';
 	  int n1 = read (client_sock, password, sizeof (password));
-	  //scanf ("%s", password);
 	  password[8] = '\0';
-	 // printf ("password %s ", password);
-	 // printf ("after password");
-	 // printf ("\n pass%s\n", pass);
 	  if (strcmp (pass, password) != 0)
 	    {
-	     // printf ("inside strcmp");
 	      AAflag = 0;
 	    }
 	}
@@ -182,7 +170,6 @@ main (int arg_cnt, char *arg_val[])
 	}
       else
 	proceed = true;
-      //printf (" bflag : %d", Bflag);
       if (proceed == true)
 	{
 	  //printf ("inside proceed\n");
@@ -195,12 +182,8 @@ main (int arg_cnt, char *arg_val[])
 	    }
 	  else
 	    {
-	     // printf ("inside else\n");
-
-	      //printf ("aaflag %d\n", AAflag);
 	      if (!AAflag)
 		{
-		  //printf ("inside else if\n");
 
 		  char messag[] = "Authentication failed!! Invalid password";
 		  write (client_sock, messag, strlen (messag));
@@ -211,14 +194,12 @@ main (int arg_cnt, char *arg_val[])
 		}
 	      else
 		{
-		  //printf ("inside elseelse\n");
 		  strcpy (URL, site);
 		  int flag = 0;
 		  for (int i = 0; i < 15; i++)
 		    {
 		      if (strlen (website[i]))
 			{
-			 // printf ("\n strlen %d", strlen (website[i]));
 			  if (!strcmp (URL, website[i]))
 			    {
 			      flag++;
@@ -436,7 +417,6 @@ main (int arg_cnt, char *arg_val[])
 		      char bff[1000];
 
 		      write (web_sock, buffer, strlen (buffer));
-		      //printf ("b4 do while\n");
 		      int loc = findminfreq ();
 		      bzero (buffer, sizeof (buffer));
 
@@ -444,14 +424,8 @@ main (int arg_cnt, char *arg_val[])
 			{ bzero (buffer, sizeof (buffer));
 
 			  n = read (web_sock, buffer, sizeof (buffer) - 1);
-			//  printf ("\n\nafter readong\n");
-               // printf("\n n %d",n);
 			  if (n > 0)
 			    write (client_sock, buffer, strlen (buffer));
-			//  printf("hopefully in next line");
-
-                 //printf("\n\n\n %s",buffer);
-			 // printf ("\n \n minimum frequency %d\n\n", loc);
 			  FILE *obj;
 			  switch (loc)
 			    {
@@ -460,12 +434,9 @@ main (int arg_cnt, char *arg_val[])
 			    case 0:
 			      obj = fopen ("file0.txt", "a");
 			      int n;
-			     // printf ("after fopen\n");
-			     // printf ("\n\n%s\n\n", buffer);
 			      strcpy (website[loc], "");
 			      strcpy (website[loc], URL);
 			      fprintf (obj, "%s", buffer);
-			     // printf ("\n\n%s\n\n", buffer);
 			      fclose (obj);
 
 			      break;
@@ -577,8 +548,6 @@ main (int arg_cnt, char *arg_val[])
 		      frequency[loc] = 1;
 		      precnt++;
 		      recentlyused[precnt % 5] = loc;
-		     // printf ("\n\nwritten to socket\n\n");
-		      //printf ("\n\n done writing\n\n");
 		      close (client_sock);
 
 		    }
